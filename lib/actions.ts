@@ -19,6 +19,14 @@ export async function login(email: string, password: string) {
     return { ok: false, message: "Invalid credentials" };
   }
 
+  if (!user.verified) {
+    return {
+      ok: false,
+      message:
+        "You account hasn't been verified yet. Please wait for an admin to approve your account.",
+    };
+  }
+
   const sessionToken = generateSessionToken();
   const session = await createSession(sessionToken, user.id);
   await setSessionTokenCookie(sessionToken, session.expiresAt);
@@ -46,7 +54,12 @@ export async function findPatient(patientId: string) {
   return await db.patient.findUnique({ where: { id: patientId } });
 }
 
-export async function signup(name: string, email: string, password: string, role: "ADMIN" | "VOLUNTEER") {
+export async function signup(
+  name: string,
+  email: string,
+  password: string,
+  role: "ADMIN" | "VOLUNTEER",
+) {
   try {
     // Check if user already exists
     const existingUser = await db.user.findUnique({ where: { email } });

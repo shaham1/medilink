@@ -1,23 +1,21 @@
 import z from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, adminProcedure } from "../trpc";
 
 export const userRouter = createTRPCRouter({
-  getUnverified: publicProcedure
-    .query(async ({ ctx: { db } }) => {
-      return await db.user.findMany({
-        where: { verified: false },
-        orderBy: { id: 'desc' }
-      });
-    }),
+  getUnverified: adminProcedure.query(async ({ ctx: { db } }) => {
+    return await db.user.findMany({
+      where: { verified: false },
+      orderBy: { id: "desc" },
+    });
+  }),
 
-  getAll: publicProcedure
-    .query(async ({ ctx: { db } }) => {
-      return await db.user.findMany({
-        orderBy: { id: 'desc' }
-      });
-    }),
+  getAll: adminProcedure.query(async ({ ctx: { db } }) => {
+    return await db.user.findMany({
+      orderBy: { id: "desc" },
+    });
+  }),
 
-  verify: publicProcedure
+  verify: adminProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx: { db }, input: { id } }) => {
       return await db.user.update({
@@ -26,7 +24,7 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
-  delete: publicProcedure
+  delete: adminProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx: { db }, input: { id } }) => {
       return await db.user.delete({
