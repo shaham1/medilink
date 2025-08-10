@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { User, Users, QrCode, LogOut, Shield, UserCheck } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import type * as React from "react"
+import { User, Users, QrCode, LogOut, UserCheck, Activity } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 import {
   Sidebar,
@@ -17,23 +17,28 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import { logout } from "@/lib/actions";
+} from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
+import { logout } from "@/lib/actions"
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: {
-    id: number;
-    name: string;
-    email: string;
-    role: "ADMIN" | "VOLUNTEER";
-  };
+    id: number
+    name: string
+    email: string
+    role: "ADMIN" | "VOLUNTEER"
+  }
 }
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   const generalPages = [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: Activity,
+    },
     {
       title: "Scan Patient",
       url: "/scan",
@@ -44,7 +49,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       url: "/patients",
       icon: Users,
     },
-  ];
+  ]
 
   const adminPages = [
     {
@@ -52,18 +57,21 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       url: "/admin/verify-users",
       icon: UserCheck,
     },
-  ];
+  ]
 
   const handleLogout = async () => {
-    await logout();
-  };
+    await logout()
+  }
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader className="border-sidebar-border flex items-center border-b">
-        <span className="text-xl font-semibold">
-          <span className="text-red-600">NH</span> Clinic
-        </span>
+      <SidebarHeader className="border-sidebar-border flex items-center border-b p-4">
+        <div className="flex items-center gap-3">
+          <img src="/assets/medical-clipboard.png" alt="NH Clinic Logo" className="h-8 w-8" />
+          <span className="text-xl font-semibold">
+            <span className="text-red-600">NH</span> Clinic
+          </span>
+        </div>
       </SidebarHeader>
 
       <SidebarContent>
@@ -116,9 +124,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">{user.name}</span>
-                  <span className="text-muted-foreground text-xs">
-                    {user.email}
-                  </span>
+                  <span className="text-muted-foreground text-xs">{user.email}</span>
                 </div>
               </div>
               <div className="flex items-center justify-between">
@@ -131,12 +137,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
                 >
                   {user.role}
                 </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleLogout}
-                  className="h-8 w-8 p-0"
-                >
+                <Button variant="ghost" size="sm" onClick={handleLogout} className="h-8 w-8 p-0">
                   <LogOut className="h-4 w-4" />
                   <span className="sr-only">Logout</span>
                 </Button>
@@ -147,5 +148,5 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  );
+  )
 }

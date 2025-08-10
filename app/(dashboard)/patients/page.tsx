@@ -339,9 +339,12 @@ export default function PatientsPage() {
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Patient Management</h1>
-            <p className="text-gray-600">Manage all patient records and information</p>
+          <div className="flex items-center gap-4">
+            <img src="/assets/medical-pills.jpeg" alt="Medical" className="h-12 w-12 rounded-lg object-cover" />
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Patient Management</h1>
+              <p className="text-gray-600">Manage all patient records and information</p>
+            </div>
           </div>
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
