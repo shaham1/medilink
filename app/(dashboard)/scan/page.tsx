@@ -200,14 +200,8 @@ export default function PatientCardSystem() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen p-4">
       <div className="mx-auto max-w-2xl space-y-6">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900">NH Clinic</h1>
-          <p className="text-gray-600">Patient Card System</p>
-        </div>
-
         {/* Scanner Card */}
         <Card>
           <CardHeader className="text-center">
@@ -396,7 +390,7 @@ export default function PatientCardSystem() {
         {/* Instructions */}
         {!patient && (
           <Card className="border-blue-200 bg-blue-50">
-            <CardContent className="pt-6">
+            <CardContent>
               <div className="text-center text-sm text-blue-800">
                 <p className="mb-2 font-medium">How to use:</p>
                 <ul className="mx-auto max-w-md space-y-1 text-left">

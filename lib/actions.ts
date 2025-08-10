@@ -31,7 +31,7 @@ export async function login(email: string, password: string) {
   const session = await createSession(sessionToken, user.id);
   await setSessionTokenCookie(sessionToken, session.expiresAt);
 
-  redirect("/dashboard");
+  redirect("/scan");
 }
 
 export async function logout() {
