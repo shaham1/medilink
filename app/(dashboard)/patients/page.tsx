@@ -278,7 +278,7 @@ export default function PatientsPage() {
     if (!isScanningBarcode) return null
 
     return (
-      <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[60] bg-black/80 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg p-6 w-full max-w-md">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Scan Patient Barcode</h3>
