@@ -50,8 +50,21 @@ export async function logout() {
   redirect("/login");
 }
 
-export async function findPatient(patientId: string) {
-  return await db.patient.findUnique({ where: { id: patientId } });
+export async function scanCode(patientId: string) {
+  const patient = await db.patient.findUnique({ where: { id: patientId } });
+
+  if (!patient) {
+    return null;
+  }
+
+  const now = new Date();
+
+  await db.patient.update({
+    where: { id: patientId },
+    data: { dateLastVisited: now, visits: { create: { dateTime: now } } },
+  });
+
+  return patient;
 }
 
 export async function signup(

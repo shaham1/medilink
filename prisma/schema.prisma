@@ -34,12 +34,21 @@ model Session {
 }
 
 model Patient {
-    id              String   @id
-    cardNumber      Int      @default(autoincrement())
-    name            String
-    age             Int
-    phoneNumber     String
-    cnic            String
+    id          String @id
+    cardNumber  Int    @default(autoincrement())
+    name        String
+    age         Int
+    phoneNumber String
+    cnic        String
+    comments    String
+
     dateLastVisited DateTime
-    comments        String
+    visits          Visit[]
+}
+
+model Visit {
+    id        Int      @id @default(autoincrement())
+    patient   Patient  @relation(fields: [patientId], references: [id])
+    patientId String
+    dateTime  DateTime
 }

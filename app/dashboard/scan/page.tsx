@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { BrowserMultiFormatReader, NotFoundException } from "@zxing/library";
 import type { Patient } from "@prisma/client";
-import { findPatient } from "lib/actions";
+import { scanCode } from "lib/actions";
 
 const formatDate = (date: Date) => {
   return date.toLocaleDateString("en-US", {
@@ -155,7 +155,7 @@ export default function PatientCardSystem() {
       const code = result.getText();
       setScannedCode(code);
 
-      const foundPatient = await findPatient(code);
+      const foundPatient = await scanCode(code);
       if (foundPatient) {
         setPatient(foundPatient);
       } else {

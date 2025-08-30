@@ -60,7 +60,16 @@ const mockPatients: Patient[] = [
 ];
 
 for (const patient of mockPatients) {
-  await prisma.patient.create({ data: patient });
+  await prisma.patient.create({
+    data: {
+      ...patient,
+      visits: {
+        create: {
+          dateTime: patient.dateLastVisited,
+        },
+      },
+    },
+  });
 }
 
 prisma.$disconnect();
