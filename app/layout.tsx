@@ -7,7 +7,7 @@ import { TRPCReactProvider } from "trpc/react";
 
 export const metadata: Metadata = {
   title: "MediLink",
-  description: "MediLink app by Dawood Syed",
+  description: "MediLink app by Dawood Syed ",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
   generator: "v0.dev",
 };
