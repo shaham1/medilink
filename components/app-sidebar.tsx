@@ -68,7 +68,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       <SidebarHeader className="border-sidebar-border flex items-center border-b p-4">
         <div className="flex items-center gap-3">
           <span className="text-xl font-semibold">
-            <span className="text-red-600">NH</span> Clinic
+            <span className="text-red-600">Medi</span>Link
           </span>
         </div>
       </SidebarHeader>
