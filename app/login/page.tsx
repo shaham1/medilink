@@ -151,7 +151,7 @@ export default function AuthPage() {
         <div className="text-center">
           <div className="mb-2 flex items-center justify-center gap-3">
             <h1 className="text-3xl font-bold text-gray-900">
-              <span className="text-red-600">NH</span> Clinic
+              <span className="text-red-600">Medi</span>Link
             </h1>
           </div>
           <p className="text-gray-600">Patient Management System</p>

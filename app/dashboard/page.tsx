@@ -55,7 +55,7 @@ export default function DashboardPage() {
           <div className="mx-auto max-w-7xl">
             <div className="mb-4 flex items-center gap-4">
               <div>
-                <h1 className="text-4xl font-bold">Welcome to NH Clinic</h1>
+                <h1 className="text-4xl font-bold">MediLink</h1>
                 <p className="mt-2 text-xl text-blue-100">
                   Comprehensive Patient Management System
                 </p>
