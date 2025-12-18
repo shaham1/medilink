@@ -8,6 +8,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter, // 🟢 CHANGE: Added CardFooter to imports
 } from "components/ui/card";
 import { Alert, AlertDescription } from "components/ui/alert";
 import { Badge } from "components/ui/badge";
@@ -23,10 +24,16 @@ import {
   CreditCard,
   Hash,
   AlertCircle,
+  Loader2, // 🟢 CHANGE: Added Loader2 icon for loading state
+  ArrowRight, // 🟢 CHANGE: Added ArrowRight icon for the button
 } from "lucide-react";
 import { BrowserMultiFormatReader, NotFoundException } from "@zxing/library";
 import type { Patient } from "@prisma/client";
 import { scanCode } from "lib/actions";
+
+// 🟢 CHANGE: Imported tRPC to access your existing backend function
+// Make sure this path matches where your trpc hook is exported (e.g., "@/utils/trpc" or "~/utils/api")
+import { api } from "trpc/react";
 
 const formatDate = (date: Date) => {
   return date.toLocaleDateString("en-US", {
@@ -48,6 +55,23 @@ export default function PatientCardSystem() {
   const [scannedCode, setScannedCode] = useState<string>("");
   const [patient, setPatient] = useState<Patient | null>(null);
   const [error, setError] = useState<string>("");
+  
+  // 🟢 CHANGE: Added local state to track if the check-in was successful
+  const [checkInSuccess, setCheckInSuccess] = useState(false);
+
+  // 🟢 CHANGE: Setup the tRPC mutation to use your existing 'recordVisit' procedure
+  const recordVisitMutation = api.patient.recordVisit.useMutation({
+    onSuccess: () => {
+      setCheckInSuccess(true);
+      setError("");
+    },
+    onError: (err: any) => {
+      // This catches errors like "Card is blocked" from your router
+      setError(err.message);
+      setCheckInSuccess(false);
+    }
+  });
+
   const [availableCameras, setAvailableCameras] = useState<MediaDeviceInfo[]>(
     [],
   );
@@ -69,6 +93,13 @@ export default function PatientCardSystem() {
   useEffect(() => {
     loadAvailableCameras();
   }, []);
+
+  // 🟢 CHANGE: Added handler function for the new "Check In" button
+  const handleCheckIn = () => {
+    if (!patient) return;
+    // Calls the mutation defined above
+    recordVisitMutation.mutate({ id: patient.id });
+  };
 
   const loadAvailableCameras = async () => {
     try {
@@ -129,6 +160,9 @@ export default function PatientCardSystem() {
       setError("");
       setScannedCode("");
       setPatient(null);
+      // 🟢 CHANGE: Reset check-in states when starting a new scan
+      setCheckInSuccess(false); 
+      recordVisitMutation.reset(); 
       setIsScanning(true);
 
       // Load cameras if not already loaded or if permission was previously denied
@@ -194,6 +228,9 @@ export default function PatientCardSystem() {
     setScannedCode("");
     setPatient(null);
     setError("");
+    // 🟢 CHANGE: Reset check-in states when manually resetting
+    setCheckInSuccess(false);
+    recordVisitMutation.reset();
     if (codeReader.current) {
       codeReader.current.reset();
     }
@@ -384,6 +421,36 @@ export default function PatientCardSystem() {
                 </div>
               </div>
             </CardContent>
+
+            {/* 🟢 CHANGE: Added CardFooter containing the new Check-In button logic */}
+            <CardFooter className="bg-green-50/50 p-6 pt-0">
+               <Button 
+                 onClick={handleCheckIn} 
+                 disabled={recordVisitMutation.isPending || checkInSuccess}
+                 className={`w-full h-12 text-lg font-semibold shadow-md transition-all ${
+                   checkInSuccess 
+                     ? "bg-green-600 hover:bg-green-700" 
+                     : "bg-blue-600 hover:bg-blue-700"
+                 }`}
+               >
+                 {recordVisitMutation.isPending ? (
+                   <>
+                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                     Processing...
+                   </>
+                 ) : checkInSuccess ? (
+                   <>
+                     <CheckCircle className="mr-2 h-5 w-5" />
+                     Checked In Successfully
+                   </>
+                 ) : (
+                   <>
+                     Check In Patient
+                     <ArrowRight className="ml-2 h-5 w-5" />
+                   </>
+                 )}
+               </Button>
+            </CardFooter>
           </Card>
         )}
 
